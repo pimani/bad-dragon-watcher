@@ -53,6 +53,13 @@ python3 main.py
 ```
 You can then leave using ctrl+a then ctrl+d
 
+The bot check if new toy have been add to the clearence section every x time, by default every 120s
+but this value can me modified in the conf.ini file.
+When new toy are found, the bot will check every filter for every user and then send a notification
+with the definition of the toy to the users.
+
+You can access a help with the help command, by default !help.
+
 ## Roadmap
 
 Test the multiple option of filter (aka wait for the end of covid-19 situation
