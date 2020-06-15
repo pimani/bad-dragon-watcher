@@ -87,12 +87,15 @@ class Client:
     async def new_toy(self, toy_list):
         """Show the toy_list to the channel."""
         for i in self.Filter:
-            temp = ""
+            temp = []
             for k in toy_list:
                 if self.Filter[i].test_toy(k):
-                    temp += k.__str__() + "\n"
-            if temp != "":
-                await self.send_message(text="New toy with {} : \n".format(str(i))+temp)
+                    temp.append(k.__str__() + "\n")
+            if len(temp) > 0:
+                embed_list = long_embed(temp, title="New toy for {}".format(str(i)), description="New toy",
+                                        fields_title="Part")
+                for k in embed_list:
+                    await self.send_message(text=None, embed_text=k)
 
     async def new_filter(self, arg_list):
         """Add a new filter to the dictionary with parser value."""

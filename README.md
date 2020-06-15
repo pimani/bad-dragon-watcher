@@ -69,6 +69,8 @@ Actually tested:
 
 * toy name
 * size
+* comparator
+* condition
 
 Everything else can work or not
 
