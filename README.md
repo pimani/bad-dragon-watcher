@@ -71,6 +71,7 @@ Actually tested:
 * size
 * comparator
 * condition
+* hardness
 
 Everything else can work or not
 

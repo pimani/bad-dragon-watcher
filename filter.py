@@ -1,5 +1,6 @@
 """Filter object who work on bad-dragon toy."""
 from sizeEnum import SizeSet
+from hardnessEnum import HardnessSet
 
 
 class Filter:
@@ -20,7 +21,7 @@ class Filter:
     Every value can be None, in that case the corresponding test will always return true.
     """
 
-    def __init__(self, name, toy_name, toy_type, size, comparator, color, firmness, cumtube, suction_cup, condition):
+    def __init__(self, name, toy_name, toy_type, size, comparator, color, firmness, cum_tube, suction_cup, condition):
         """Init the object data."""
         self.Name = name
         self.ToyName = toy_name
@@ -29,12 +30,15 @@ class Filter:
         self.Size = size
         self.Color = color
         self.Firmness = firmness
-        self.CumTube = cumtube
+        self.CumTube = cum_tube
         self.SuctionCup = suction_cup
         self.Condition = condition
         self.SizeNumber = {}
+        self.hardnessValue = {}
         for i in SizeSet:
             self.SizeNumber[i.short_name()] = i.order()
+        for i in HardnessSet:
+            self.hardnessValue[i.short_name()] = i.name()
 
     def __str__(self):
         return "{}:\nToy name: {}\nCategory: {}\nSize: {}\nComparator: {}\nColor: {}\nFirmness: {}\nCumTube: {}\n" \
@@ -75,7 +79,7 @@ class Filter:
         return self.SuctionCup
 
     def get_cum_tube(self):
-        """Return if there a cumtube on the filter."""
+        """Return if there a cum tube on the filter."""
         return self.CumTube
 
     def get_condition(self):
@@ -142,10 +146,7 @@ class Filter:
         """Test the firmness of a toy."""
         if self.get_firmness() is None:
             return True
-        for i in self.get_firmness():
-            if i not in toy.get_firmness():
-                return False
-        return True
+        return self.hardnessValue[self.get_firmness()] == toy.get_firmness()
 
     def test_cum_tube(self, toy):
         """Test the cum_tube of a toy."""
