@@ -32,7 +32,7 @@ Modify the config file to add your key at the token line, and adjust the options
 
 ```ini
 [DEFAULT]
-#Time between each call to bd api, don't set to low we don't wand to ddos the api
+#Time between each call to bd api, don't set to low we don't wand to DDoS the api
 timeBetweenCall = 120
 database = database.db
 token = NTYyOTDffGc3OTAwNTAwOT54.fM8C2A.kX2SgfdFgZR3EV7DFoPb7acrMbM
@@ -53,7 +53,7 @@ python3 main.py
 ```
 You can then leave using ctrl+a then ctrl+d
 
-The bot check if new toy have been add to the clearence section every x time, by default every 120s
+The bot check if new toy have been add to the clearance section every x time, by default every 120s
 but this value can me modified in the conf.ini file.
 When new toy are found, the bot will check every filter for every user and then send a notification
 with the definition of the toy to the users.

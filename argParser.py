@@ -5,23 +5,29 @@ from hardnessEnum import HardnessSet
 from sizeEnum import SizeSet
 from typeEnum import TypeSet
 
-#  TODO Fusioner option pour que filter et argParse sois générer à partir de liste d'option
+#  TODO fuse option so that filter and argParse are being generated with the option list
 
 
 class ArgParser:
     """
-    Objet to represent a bad-dragon toy.
+    Object to represent a bad-dragon toy.
 
-    name : nom du type du jouet str
-    type : type du jouet (penetrable, ..etc) str
-    size : taille du jouet str
-    color : couleur du jouet liste str
-    firmness : duretée du jouet str liste
-    accessories : accessoire du jouets listes str
+    Correct : Tell if any error happened during the parse, boolean
+    Error : Tell witch error happened, string
+    Name : Name of the filter, string
+    ToyName: Name of the toy, string
+    Type : Category of the toy, string
+    Comparator: comparator to select a variety of size ">" or "<"
+    Size : Size of the toy, string
+    Color : Color of the toy, string
+    Firmness : Hardness of the yoy, string
+    CumTube : if the toy have a cum tube, string
+    SuctionCup : if the toy have a suction cup, string
+    Condition : Condition of the toy, string
     """
 
     def __init__(self, toy_list):
-        """Init fonction, create the toy."""
+        """Init function, create the toy."""
         self.Toy_list = toy_list
         self.Option_list = []
         self.Correct = False
@@ -164,21 +170,20 @@ class ArgParser:
     def __str__(self):
         """Return a string to represent the filter."""
         temp = ""
-        temp += self.get_type() + " : "
-        temp += self.get_name() + " "
-        temp += self.get_size() + " "
-        temp += self.get_color() + " "
-        for i in self.get_firmness():
-            temp += 'Firmness '
-            temp += i + " "
-        if self.get_cum_tube() == 1:
+        temp += str(self.get_type()) + " : "
+        temp += str(self.get_name()) + " "
+        temp += str(self.get_size()) + " "
+        temp += str(self.get_color()) + " "
+        temp += str(self.get_comparator()) + " "
+        if self.get_firmness() is not None:
+            for i in self.get_firmness():
+                temp += 'Firmness '
+                temp += i + " "
+        if self.get_cum_tube() == 'true':
             temp += "Cum tube "
-        if self.get_suction_cup() == 1:
+        if self.get_suction_cup() == 'true':
             temp += "Suction cup "
-        if self.get_condition() == "flop":
-            temp += "flop : "
-        else:
-            temp += "Ready Made"
+        temp += str(self.get_condition()) + " "
         return temp
 
     def __eq__(self, other):

@@ -167,7 +167,6 @@ class Filter:
 
     def test_toy(self, toy):
         """Test a toy."""
-        print("Test toy: {} filter : {}".format(toy, self))
         result = True and self.test_name(toy)
         result = result and self.test_type(toy)
         result = result and self.test_size(toy)
