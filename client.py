@@ -113,7 +113,8 @@ class Client:
         cum_tube = self.Parser.get_cum_tube()
         suction_cup = self.Parser.get_suction_cup()
         condition = self.Parser.get_condition()
-        new_filter = Filter(name, toy_name, category, size, comparator, color, firmness, cum_tube, suction_cup, condition)
+        new_filter = Filter(name, toy_name, category, size, comparator, color, firmness, cum_tube, suction_cup,
+                            condition)
         self.Logger.debug("new filter: {}".format(new_filter))
         if new_filter.get_name() in self.Filter:
             embed_text = Embed(title="Error", description="Filter named already exist")

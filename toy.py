@@ -11,10 +11,10 @@ class Toy:
     color : color of the toy str
     firmness : firmness of the toy str
     description : flop reason str
-    toy_id : if of the toy in the clearence database str
+    toy_id : if of the toy in the clearance database str
     """
 
-    def __init__(self, name, types, size, color, firmness, cumtube,
+    def __init__(self, name, types, size, color, firmness, cum_tube,
                  suction_cup, condition, description, toy_id):
         """Init function, create the toy."""
         self.ID = toy_id
@@ -23,7 +23,7 @@ class Toy:
         self.Size = size
         self.Color = color
         self.Firmness = firmness
-        self.CumTube = cumtube
+        self.CumTube = cum_tube
         self.SuctionCup = suction_cup
         self.Condition = condition
         self.Description = description
