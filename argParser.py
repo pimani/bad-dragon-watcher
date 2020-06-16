@@ -6,6 +6,7 @@ from sizeEnum import SizeSet
 from typeEnum import TypeSet
 
 #  TODO fuse option so that filter and argParse are being generated with the option list
+#  TODO get value to init option from the api
 
 
 class ArgParser:

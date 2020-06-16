@@ -67,12 +67,9 @@ class BadDragonApi:
 
     def get_inventory_page(self, page):
         try:
-            response = requests.get("{}inventory-toys?type[]=ready_made&"
-                                    "type[]=flop&price[min]=0&price[max]=300&"
-                                    "noAccessories=false&cumtube=false"
-                                    "&suctionCup=false&sort[field]=price&"
-                                    "&sort[direction]=asc&page={}&limit={}".format(BadDragonApi.url_base, page,
-                                                                                   BadDragonApi.numberByPage))
+            response = requests.get("{}inventory-toys?price[min]=0&price[max]=300"
+                                    "&sort[field]=price&&sort[direction]=asc&page="
+                                    "{}&limit={}".format(BadDragonApi.url_base, page, BadDragonApi.numberByPage))
         except requests.ConnectionError:
             self.logger.error("BadDragonApi : get_inventory_page : ConnectionError")
             return
