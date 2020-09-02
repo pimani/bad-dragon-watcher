@@ -90,6 +90,29 @@ class BadDragonApi:
         else:
             return None
 
+    def get_option_types_values(self):
+        try:
+            response = requests.get("{}option-types-values".format(BadDragonApi.url_base))
+        except requests.ConnectionError:
+            self.logger.error("BadDragonApi : get_option_types_values : ConnectionError")
+            return
+        except requests.HTTPError:
+            self.logger.error("BadDragonApi : get_option_types_values : HTTPError")
+            return
+        except requests.TooManyRedirects:
+            self.logger.error("BadDragonApi : get_option_types_values : TooManyRedirects")
+            return
+        except requests.URLRequired:
+            self.logger.error("BadDragonApi : get_option_types_values : URLRequired")
+            return
+        except requests.RequestException:
+            self.logger.error("BadDragonApi : get_option_types_values : RequestException")
+            return
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return None
+
     def number_of_toy(self):
         """Return the number of toy for the actual api response."""
         return self.total

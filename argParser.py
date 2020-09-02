@@ -1,9 +1,7 @@
 from argOption import ArgOption
-from conditionEnum import ConditionSet
 from filter import Filter
-from hardnessEnum import HardnessSet
-from sizeEnum import SizeSet
-from typeEnum import TypeSet
+from discord import Embed
+
 
 #  TODO fuse option so that filter and argParse are being generated with the option list
 #  TODO get value to init option from the api
@@ -24,12 +22,13 @@ class ArgParser:
     Firmness : Hardness of the yoy, string
     CumTube : if the toy have a cum tube, string
     SuctionCup : if the toy have a suction cup, string
-    Condition : Condition of the toy, string
+    Flop : Flop of the toy, string
     """
 
-    def __init__(self, toy_list):
+    def __init__(self, options):
         """Init function, create the toy."""
-        self.Toy_list = toy_list
+        self.Toy_list = list(options.ProductName.keys())
+        self.Options = options
         self.Option_list = []
         self.Correct = False
         self.Error = None
@@ -42,7 +41,7 @@ class ArgParser:
         self.Firmness = None
         self.CumTube = None
         self.SuctionCup = None
-        self.Condition = None
+        self.Flop = None
 
         self.init_passer()
 
@@ -53,15 +52,19 @@ class ArgParser:
 
     def init_passer(self):
         self.Name = ArgOption("name", "N", "Name of the filter", [])
-        self.Toy_Name = ArgOption("toy-name", "n", "Name of the toy !ToyName to get all toy name", self.Toy_list)
-        self.Type = ArgOption("category", "ca", "Type of the toy", [i.short_name() for i in TypeSet])
-        self.Size = ArgOption("size", "s", "Size of the toy", [i.short_name() for i in SizeSet])
-        self.Comparator = ArgOption("comparator", "co", "Comparator the size of the toy", ['>', '<'])
+        self.Toy_Name = ArgOption("toy-name", "n", "Name of the toy !ToyName to get the list", self.Options.product_name())
+        self.Type = ArgOption("category", "ca", "Type of the toy !toyType to get the list", self.Options.type_option())
+        self.Size = ArgOption("size", "s", "Size of the toy !toySize to get the list", self.Options.size_option())
+        self.Comparator = ArgOption("comparator", "co", "Comparator the size of the toy !comparator to get the list",
+                                    self.Options.comparator_option())
         self.Color = ArgOption("color", "c", "Color of the toy", [])
-        self.Firmness = ArgOption("firmness", "f", "Firmness of the toy", [i.short_name() for i in HardnessSet])
-        self.CumTube = ArgOption("cum-tube", "ct", "Cum tube or not on the toy", ['true', 'false'])
-        self.SuctionCup = ArgOption("suction-cup", "sc", "Suction or not on the toy", ['true', 'false'])
-        self.Condition = ArgOption("condition", "cn", "Condition of the toy", [i.short_name() for i in ConditionSet])
+        self.Firmness = ArgOption("firmness", "f", "Firmness of the toy !toyFirmness to get the list",
+                                  self.Options.firmness_option())
+        self.CumTube = ArgOption("cum-tube", "ct", "Cum tube or not on the toy !cumTube to get the list",
+                                 self.Options.cum_tub_option())
+        self.SuctionCup = ArgOption("suction-cup", "sc", "Suction or not on the toy !suctionCup to get the list",
+                                    self.Options.suction_cup_option())
+        self.Flop = ArgOption("Flop", "cn", "Flop condition of the toy", self.Options.flop_option())
         self.Option_list.append(self.Name)
         self.Option_list.append(self.Toy_Name)
         self.Option_list.append(self.Type)
@@ -71,7 +74,7 @@ class ArgParser:
         self.Option_list.append(self.Firmness)
         self.Option_list.append(self.CumTube)
         self.Option_list.append(self.SuctionCup)
-        self.Option_list.append(self.Condition)
+        self.Option_list.append(self.Flop)
 
     def passe(self, arg_list):
         """Parse the text and set value in the Option_list, if a parse error append is_correct return false"""
@@ -85,7 +88,10 @@ class ArgParser:
                     value = arg[len("--" + arg_option.name() + "="):]
                     if len(value) > 0 and \
                        (len(arg_option.possible_value()) == 0 or value in arg_option.possible_value()):
-                        arg_option.set_value(value)
+                        if len(arg_option.possible_value()) == 0:
+                            arg_option.set_value(value)
+                        else:
+                            arg_option.set_value(arg_option.option_values()[value])
                     else:
                         self.Error = arg_option.name() + " Bad or missing value"
                         self.Correct = False
@@ -93,7 +99,10 @@ class ArgParser:
                     value = arg[len("-" + arg_option.short_name() + "="):]
                     if len(value) > 0 and \
                        (len(arg_option.possible_value()) == 0 or value in arg_option.possible_value()):
-                        arg_option.set_value(value)
+                        if len(arg_option.possible_value()) == 0:
+                            arg_option.set_value(value)
+                        else:
+                            arg_option.set_value(arg_option.option_values()[value])
                     else:
                         self.Error = arg_option.short_name() + " Bad or missing value"
                         self.Correct = False
@@ -105,7 +114,7 @@ class ArgParser:
     def create_filter(self):
         return Filter(self.Name, self.get_toy_name(), self.get_type(), self.get_size(), self.get_comparator(),
                       self.get_color(), self.get_firmness(), self.get_cum_tube(), self.get_suction_cup(),
-                      self.get_condition())
+                      self.get_flop())
 
     def get_help(self):
         response = self.Name.help_text() + "\n"
@@ -117,7 +126,7 @@ class ArgParser:
         response += self.Firmness.help_text() + "\n"
         response += self.CumTube.help_text() + "\n"
         response += self.SuctionCup.help_text() + "\n"
-        response += self.Condition.help_text()
+        response += self.Flop.help_text()
         return response
 
     def get_toy_name(self):
@@ -156,9 +165,9 @@ class ArgParser:
         """Return if the filter have a suction cup."""
         return self.SuctionCup.value()
 
-    def get_condition(self):
-        """Return the condition of the filter."""
-        return self.Condition.value()
+    def get_flop(self):
+        """Return the flop condition of the filter."""
+        return self.Flop.value()
 
     def get_correct(self):
         """Return if the last parse finish with a error."""
@@ -173,18 +182,16 @@ class ArgParser:
         temp = ""
         temp += str(self.get_type()) + " : "
         temp += str(self.get_name()) + " "
-        temp += str(self.get_size()) + " "
+        temp += str(self.get_size().value()) + " "
         temp += str(self.get_color()) + " "
         temp += str(self.get_comparator()) + " "
         if self.get_firmness() is not None:
-            for i in self.get_firmness():
-                temp += 'Firmness '
-                temp += i + " "
+            temp += str(self.get_firmness().value()) + " "
         if self.get_cum_tube() == 'true':
             temp += "Cum tube "
         if self.get_suction_cup() == 'true':
             temp += "Suction cup "
-        temp += str(self.get_condition()) + " "
+        temp += str(self.get_flop()) + " "
         return temp
 
     def __eq__(self, other):
@@ -196,7 +203,7 @@ class ArgParser:
         result = result and (self.get_firmness() == other.get_firmness() or self.get_firmness() is None)
         result = result and (self.get_cum_tube() == other.get_cum_tube() or self.get_cum_tube() is None)
         result = result and (self.get_suction_cup() == other.get_suction_cup() or self.get_suction_cup() is None)
-        result = result and (self.get_condition() == other.get_condition() or self.get_condition() is None)
+        result = result and (self.get_flop() == other.get_flop() or self.get_flop() is None)
         return result
 
     def __ne__(self, other):

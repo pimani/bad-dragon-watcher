@@ -8,7 +8,7 @@ from filter import Filter
 class Client:
     """Object to represent a discord channel."""
 
-    def __init__(self, message_destination, logger, client, parser, toy_dictionary=None):
+    def __init__(self, message_destination, logger, client, parser, toy_dictionary):
         """Init function for the object."""
         if toy_dictionary is None:
             toy_dictionary = {}
@@ -112,9 +112,9 @@ class Client:
         firmness = self.Parser.get_firmness()
         cum_tube = self.Parser.get_cum_tube()
         suction_cup = self.Parser.get_suction_cup()
-        condition = self.Parser.get_condition()
+        flop = self.Parser.get_flop()
         new_filter = Filter(name, toy_name, category, size, comparator, color, firmness, cum_tube, suction_cup,
-                            condition)
+                            flop)
         self.Logger.debug("new filter: {}".format(new_filter))
         if new_filter.get_name() in self.Filter:
             embed_text = Embed(title="Error", description="Filter named already exist")
@@ -122,6 +122,11 @@ class Client:
                                  inline=False)
             await self.send_message(text=None, embed_text=embed_text)
             return None
+        else:
+            embed_text = Embed(title="New Filter", description="Filter {} created".format(name))
+            embed_text.add_field(name="Response", value="Filter named {} created".format(new_filter.get_name()),
+                                 inline=False)
+            await self.send_message(text=None, embed_text=embed_text)
         self.Filter[new_filter.get_name()] = new_filter
         return new_filter
 
@@ -143,11 +148,13 @@ class Client:
 
     async def send_toy_list(self):
         """Show all the toy for all the filter."""
-        #   text = ""
-        #   for k in self.ToyInShop:
-        #       text += "{}\n".format(str(self.ToyInShop[k]))
         toy_list = []
+        if len(self.ToyInShop) == 0:
+            embed_text = Embed(title="Toy List", description="There is no toy")
+            await self.send_message(embed_text=embed_text)
+            return
         for k in self.ToyInShop:
+            print("{} {} {}".format(self.ToyInShop[k], str(self.ToyInShop[k]), self.ToyInShop[k].__str__()))
             toy_list.append(str(self.ToyInShop[k]) + "\n")
         embed_list = long_embed(toy_list, title="List of toy", description="List of toy", fields_title="Part")
         for k in embed_list:
@@ -161,6 +168,12 @@ class Client:
         filter_list = []
         for k in self.Filter:
             filter_list.append(str(self.Filter[k]) + "\n")
-        embed_list = long_embed(filter_list, title="List of filter", description="List of filter", fields_title="Part")
-        for k in embed_list:
-            await self.send_message(text=None, embed_text=k)
+        if len(filter_list) > 0:
+            embed_list = long_embed(filter_list, title="List of filter", description="List of filter",
+                                    fields_title="Part")
+            for k in embed_list:
+                await self.send_message(text=None, embed_text=k)
+        else:
+            embed_text = Embed(title="List of filter", description="List of filter")
+            embed_text.add_field(name="Response", value="You have no filter", inline=False)
+            await self.send_message(embed_text=embed_text)

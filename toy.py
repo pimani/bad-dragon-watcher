@@ -15,7 +15,7 @@ class Toy:
     """
 
     def __init__(self, name, types, size, color, firmness, cum_tube,
-                 suction_cup, condition, description, toy_id):
+                 suction_cup, flop, description, toy_id):
         """Init function, create the toy."""
         self.ID = toy_id
         self.Name = name
@@ -25,7 +25,7 @@ class Toy:
         self.Firmness = firmness
         self.CumTube = cum_tube
         self.SuctionCup = suction_cup
-        self.Condition = condition
+        self.Flop = flop
         self.Description = description
 
     def get_name(self):
@@ -56,9 +56,9 @@ class Toy:
         """Return if the toy have a suction cup."""
         return self.SuctionCup
 
-    def get_condition(self):
-        """Return the condition of the toy."""
-        return self.Condition
+    def get_flop(self):
+        """Return the flop condition of the toy."""
+        return self.Flop
 
     def get_description(self):
         """Return the description of the toy."""
@@ -71,18 +71,16 @@ class Toy:
     def __str__(self):
         """Return a string to represent the toy."""
         temp = ""
-        temp += self.Type + " : "
-        temp += self.Name + " "
-        temp += self.Size + " "
-        temp += self.Color + " "
-        for i in self.Firmness:
-            temp += 'Firmness '
-            temp += i + " "
-        if self.get_cum_tube() == 1:
+        temp += "{} : ".format(self.Type.value())
+        temp += "{} ".format(self.Name.value())
+        temp += "{} ".format(self.Size.value())
+        temp += "{} ".format(self.Color)
+        temp += "{} ".format(self.Firmness.value())
+        if self.get_cum_tube().value() == '1':
             temp += "Cum tube "
-        if self.get_suction_cup() == 1:
+        if self.get_suction_cup().value() == '1':
             temp += "Suction cup "
-        if self.get_condition() == "flop":
+        if self.get_flop().value():
             temp += "flop : " + self.get_description()
         else:
             temp += "Ready Made"
@@ -97,7 +95,7 @@ class Toy:
         result = result and (self.Firmness == other.get_firmness() or self.Firmness is None)
         result = result and (self.CumTube == other.get_cum_tube() or self.CumTube is None)
         result = result and (self.SuctionCup == other.get_suction_cup() or self.SuctionCup is None)
-        result = result and (self.Condition == other.get_condition() or self.Condition is None)
+        result = result and (self.Flop == other.get_flop() or self.Flop is None)
         result = result and (self.Description == other.GetDescription() or self.Description is None)
         return result
 

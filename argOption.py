@@ -3,14 +3,18 @@ class ArgOption:
 
 	def __init__(self, name, short_name, help_text, possible_value):
 		self.Name = name
-		self.Possible_Value = possible_value
-		self.Help = help_text
 		self.Short_name = short_name
+		self.Option_Value = {possible_value[i].value(): possible_value[i] for i in possible_value}
+		self.Possible_Value = [self.Option_Value[i].value() for i in self.Option_Value]
+		self.Help = help_text
 		self.Value = None
 
 	def __str__(self):
-		return "Name: {} short-name: {} possible value: {} value: {}".format(self.Name, self.Short_name,
-																																					self.Possible_Value, self.Value)
+		return f"Name: {self.Name} short-name: {self.Short_name} possible value: {self.Possible_Value} value: {self.Value}" \
+						f" option value {self.Option_Value}"
+
+	def option_values(self):
+		return self.Option_Value
 
 	def name(self):
 		return self.Name
@@ -22,8 +26,8 @@ class ArgOption:
 		return self.Short_name
 
 	def help_text(self):
-		temp = "{}: --{} -{}".format(self.Help, self.Name, self.Short_name)
-		return temp + ("" if self.Possible_Value == [] else " possible value {}".format(self.Possible_Value))
+		# + ("" if self.Possible_Value == [] else " possible value {}".format(self.Possible_Value))
+		return "{}: --{} -{}".format(self.Help, self.Name, self.Short_name)
 
 	def value(self):
 		return self.Value
