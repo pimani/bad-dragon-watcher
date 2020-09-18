@@ -15,7 +15,7 @@ class DatabaseManager:
 		self.DbCursor.execute('''create table if not exists Toys (id INT PRIMARY KEY, toy_name TEXT, toy_size INTEGER,
 													toy_type INTEGER, color TEXT, firmness INTEGER, cumtube INTEGER, suction_cup INTEGER, flop INTEGER,
 													description TEXT, update_time FLOAT)''')
-		self.DbCursor.execute('''create table if not exists Filters (user_id INT PRIMARY KEY, filter_name TEXT, toy_name TEXT, 
+		self.DbCursor.execute('''create table if not exists Filters (user_id INT, filter_name TEXT, toy_name TEXT, 
 													toy_size INTEGER, size_comparator INTEGER, toy_type INTEGER, color TEXT, firmness INTEGER, 
 													cumtube INTEGER, suction_cup INTEGER, flop INTEGER, description TEXT,
 													PRIMARY KEY(user_id, filter_name))''')
