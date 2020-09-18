@@ -1,6 +1,7 @@
 import asyncio
 import time
 from threading import Thread
+import sys
 
 import client
 from argParser import ArgParser
@@ -50,7 +51,7 @@ class Statue:
                 self.option_from_type(toy[1], self.Options.ProductName),
                 self.option_from_type(toy[3], self.Options.ProductType),
                 self.option_from_type(toy[2], self.Options.SizeOptions),
-                self.option_from_type(toy[4], self.Options.ColorOptions),
+                toy[4],
                 self.option_from_type(toy[5], self.Options.FirmnessOptions),
                 self.option_from_type(toy[6], self.Options.CumTubValues),
                 self.option_from_type(toy[7], self.Options.SuctionCupValues),
@@ -85,9 +86,16 @@ class Statue:
         for_database = []
         actual_time = time.time()
         for i in temp.values():
-            for_database.append((i.get_id(), i.get_name(), i.get_size(), i.get_type(),
-                                 i.get_color(), i.get_firmness(), i.get_cum_tube(),
-                                 i.get_suction_cup(), i.get_flop(), i.get_description(),
+            for_database.append((i.get_id(),
+                                 None if i.get_name() is None else i.get_name().option_id(),
+                                 None if i.get_size() is None else i.get_size().option_id(),
+                                 None if i.get_type() is None else i.get_type().option_id(),
+                                 i.get_color(),
+                                 None if i.get_firmness() is None else i.get_firmness().option_id(),
+                                 None if i.get_cum_tube() is None else i.get_cum_tube().option_id(),
+                                 None if i.get_suction_cup() is None else i.get_suction_cup().option_id(),
+                                 None if i.get_flop() is None else i.get_flop().option_id(),
+                                 None if i.get_description() is None else i.get_description(),
                                  actual_time))
         self.Database.set_toy(for_database)
         await self.on_new_toy(new)

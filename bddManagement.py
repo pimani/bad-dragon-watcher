@@ -1,4 +1,5 @@
 import sqlite3
+import sys
 
 BOOL_NONE = 2
 BOOL_TRUE = 1
@@ -11,10 +12,10 @@ class DatabaseManager:
 		"""Init the database, create a file if it don't exist and initialize the table if needed"""
 		self.Conn = sqlite3.connect(database)
 		self.DbCursor = self.Conn.cursor()
-		self.DbCursor.execute('''create table if not exists Toys (id TEXT PRIMARY KEY, toy_name TEXT, toy_size INTEGER,
+		self.DbCursor.execute('''create table if not exists Toys (id INT PRIMARY KEY, toy_name TEXT, toy_size INTEGER,
 													toy_type INTEGER, color TEXT, firmness INTEGER, cumtube INTEGER, suction_cup INTEGER, flop INTEGER,
 													description TEXT, update_time FLOAT)''')
-		self.DbCursor.execute('''create table if not exists Filters (user_id INT, filter_name TEXT, toy_name TEXT, 
+		self.DbCursor.execute('''create table if not exists Filters (user_id INT PRIMARY KEY, filter_name TEXT, toy_name TEXT, 
 													toy_size INTEGER, size_comparator INTEGER, toy_type INTEGER, color TEXT, firmness INTEGER, 
 													cumtube INTEGER, suction_cup INTEGER, flop INTEGER, description TEXT,
 													PRIMARY KEY(user_id, filter_name))''')
