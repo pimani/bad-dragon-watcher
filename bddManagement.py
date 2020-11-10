@@ -1,5 +1,4 @@
 import sqlite3
-import sys
 
 BOOL_NONE = 2
 BOOL_TRUE = 1

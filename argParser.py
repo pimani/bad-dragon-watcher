@@ -1,6 +1,5 @@
 from argOption import ArgOption
 from filter import Filter
-from discord import Embed
 
 
 #  TODO fuse option so that filter and argParse are being generated with the option list
@@ -52,7 +51,8 @@ class ArgParser:
 
     def init_passer(self):
         self.Name = ArgOption("name", "N", "Name of the filter", [])
-        self.Toy_Name = ArgOption("toy-name", "n", "Name of the toy !ToyName to get the list", self.Options.product_name())
+        self.Toy_Name = ArgOption("toy-name", "n", "Name of the toy !ToyName to get the list",
+                                  self.Options.product_name())
         self.Type = ArgOption("category", "ca", "Type of the toy !toyType to get the list", self.Options.type_option())
         self.Size = ArgOption("size", "s", "Size of the toy !toySize to get the list", self.Options.size_option())
         self.Comparator = ArgOption("comparator", "co", "Comparator the size of the toy !comparator to get the list",

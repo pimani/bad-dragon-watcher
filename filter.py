@@ -171,15 +171,19 @@ class Filter:
         result = result and self.test_flop(toy)
         return result
 
+    @staticmethod
+    def value_or_none(value):
+        return None if value is None else value.option_id()
+
     def save_in_database(self, database, user_id):
-        toy_name = None if self.ToyName is None else self.ToyName.option_id()
-        size = None if self.Size is None else self.Size.option_id()
-        comparator = None if self.Comparator is None else self.Comparator.option_id()
-        toy_type = None if self.Type is None else self.Type.option_id()
-        firmness = None if self.Firmness is None else self.Firmness.option_id()
-        cum_tube = None if self.CumTube is None else self.CumTube.option_id()
-        suction_cup = None if self.SuctionCup is None else self.SuctionCup.option_id()
-        flop = None if self.Flop is None else self.Flop.option_id()
+        toy_name = self.value_or_none(self.ToyName)
+        size = self.value_or_none(self.Size)
+        comparator = self.value_or_none(self.Comparator)
+        toy_type = self.value_or_none(self.Type)
+        firmness = self.value_or_none(self.Firmness)
+        cum_tube = self.value_or_none(self.CumTube)
+        suction_cup = self.value_or_none(self.SuctionCup)
+        flop = self.value_or_none(self.Flop)
 
         database.add_filter((user_id, self.Name, toy_name, size, comparator, toy_type, self.Color, firmness, cum_tube,
                              suction_cup, flop, ""))
