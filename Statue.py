@@ -1,14 +1,10 @@
-import asyncio
 import time
-from threading import Thread
-import sys
 
 import client
 from argParser import ArgParser
 from bddManagement import DatabaseManager
 from extract import BadDragonApi
 from OptionValues import OptionValues
-from timer import check_call
 from toy import Toy
 
 
@@ -24,13 +20,9 @@ class Statue:
         self.Parser = ArgParser(self.Options)
         self.toy_from_database()
         self.TwitterThread = []
-        self.TimerThread = None
 
     def start(self):
         self.Logger.info('Start get api')
-        self.TimerThread = Thread(target=check_call, args=(self.TimeBetweenCall, self, asyncio.get_event_loop()))
-        self.TimerThread.daemon = True
-        self.TimerThread.start()
 
     def add_filter(self, new_filter, user_id):
         new_filter.save_in_database(self.Database, user_id)

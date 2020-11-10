@@ -130,7 +130,6 @@ async def _test_toy(ctx):
     await Data.UserFilter[ctx.message.author].new_toy(list(Data.ToyInShop.values()))
     pass
 
-
 if __name__ == "__main__":
     if config['DEFAULT']['token'] == "default":
         logger.error("Please enter a token in the conf.ini file")

@@ -1,7 +1,16 @@
+import configparser
+
 from discord.ext import commands
+from discord.ext import tasks
 
 import client
 from filter import Filter
+
+
+config = configparser.ConfigParser()
+config.read('conf.ini')
+
+timeBetweenCall = int(config['DEFAULT']['timeBetweenCall'])
 
 
 class BadDragonClient(commands.Bot):
@@ -11,6 +20,11 @@ class BadDragonClient(commands.Bot):
         super().__init__(loop=loop, **options)
         self.Statue = statue
         self.Logger = logger
+        self.job.start()
+
+    @tasks.loop(seconds=timeBetweenCall)  # every x times
+    async def job(self):
+        await self.Statue.on_time()
 
     @staticmethod
     def option_from_type(value_id, option_type):
