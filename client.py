@@ -96,6 +96,10 @@ class Client:
                                         fields_title="Part")
                 for k in embed_list:
                     await self.send_message(text=None, embed_text=k)
+            else:
+                embed_text = Embed(title="Test toy", description="Response")
+                embed_text.add_field(name="Response", value="No toy matches with a filter.", inline=False)
+                await self.send_message(embed_text=embed_text)
 
     async def new_filter(self, arg_list):
         """Add a new filter to the dictionary with parser value."""
