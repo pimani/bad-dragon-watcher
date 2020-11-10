@@ -84,7 +84,7 @@ class Client:
         except discord.HTTPException as e:
             self.Logger.info("Channel {} remove HTTPException : {}".format(self.DiscordClient, e.args))
 
-    async def new_toy(self, toy_list):
+    async def new_toy(self, toy_list, verbose=False):
         """Show the toy_list to the channel."""
         for i in self.Filter:
             temp = []
@@ -96,7 +96,7 @@ class Client:
                                         fields_title="Part")
                 for k in embed_list:
                     await self.send_message(text=None, embed_text=k)
-            else:
+            elif verbose:
                 embed_text = Embed(title="Test toy", description="Response")
                 embed_text.add_field(name="Response", value="No toy matches with a filter.", inline=False)
                 await self.send_message(embed_text=embed_text)
