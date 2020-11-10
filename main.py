@@ -127,7 +127,7 @@ async def _filter_list(ctx):
 
 @Client.command(name='testToy', help="Test all the toy in shop with all your filter")
 async def _test_toy(ctx):
-    await Data.UserFilter[ctx.message.author].new_toy(list(Data.ToyInShop.values()))
+    await Data.UserFilter[ctx.message.author].new_toy(list(Data.ToyInShop.values()), verbose=True)
     pass
 
 if __name__ == "__main__":
